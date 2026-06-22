@@ -4,6 +4,21 @@ import time
 from seleniumbase import SB
 from whatsapp_api import whatsapp_send_message, whatsapp_get_numberid
 
+WHATSAPP_BASE_URL = os.environ.get("WHATSAPP_BASE_URL")
+WHATSAPP_API_KEY = os.environ.get("WHATSAPP_API_KEY")
+WHATSAPP_SESSION = os.environ.get("WHATSAPP_SESSION")
+WHATSAPP_NUMBER = os.environ.get("WHATSAPP_NUMBER")
+
+whatsapp_id = whatsapp_get_numberid(
+    base_url=WHATSAPP_BASE_URL,
+    api_key=WHATSAPP_API_KEY,
+    session=WHATSAPP_SESSION,
+    contact=WHATSAPP_NUMBER,
+    )
+
+contacts = [whatsapp_id]
+content = ("Agendamento disponível! Acesse https://prenotami.esteri.it/ para marcar seu horário.")
+
 with SB(
     # browser="chrome",
     headless=True,
@@ -36,6 +51,14 @@ with SB(
                 
             else:
                 print("Appointments available")
+                whatsapp_send_message(
+                    base_url=WHATSAPP_BASE_URL,
+                    api_key=WHATSAPP_API_KEY,
+                    session=WHATSAPP_SESSION,
+                    contacts=contacts,
+                    content=content,
+                    content_type="string",
+                )
 
             sb.click('//*[@id="dataTableServices"]/tbody/tr[2]/td[4]/a')
             message = sb.wait_for_element('/html/body/div[2]/div[2]/div/div/div/div/div/div')
@@ -44,6 +67,14 @@ with SB(
                 sb.click('/html/body/div[2]/div[2]/div/div/div/div/div/div/div/div[4]/button')
             else:
                 print("Appointments available")
+                whatsapp_send_message(
+                    base_url=WHATSAPP_BASE_URL,
+                    api_key=WHATSAPP_API_KEY,
+                    session=WHATSAPP_SESSION,
+                    contacts=contacts,
+                    content=content,
+                    content_type="string",
+                )
 
         except Exception as e:
             print(e)
