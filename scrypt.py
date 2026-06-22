@@ -2,10 +2,7 @@ import os
 import time
 
 from seleniumbase import SB
-#from dotenv import load_dotenv
-
-#load_dotenv()
-
+from whatsapp_api import whatsapp_send_message, whatsapp_get_numberid
 
 with SB(
     # browser="chrome",
