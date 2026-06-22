@@ -1,4 +1,5 @@
 import os
+import time
 
 from seleniumbase import SB
 from dotenv import load_dotenv
@@ -22,17 +23,34 @@ with SB(
         sb.type('input[id="floatingLabelInput38"]', os.environ.get("PASSWORD"))
         sb.click('//*[@id="wrapper"]/div[3]/button')
         sb.click('/html/body/header/nav[1]/div/div/a[3]')
-        sb.click('//*[@id="advanced"]')
-        sb.click('//*[@id="dataTableServices"]/tbody/tr[1]/td[4]/a')
-        message = sb.wait_for_element('/html/body/div[2]/div[2]/div/div/div/div/div/div')
     except Exception as e:
-        print(e)
+        print('Error during login:', e)
+
+    while 1 == 1:
+
+        try:
+            sb.refresh()
+            sb.click('//*[@id="advanced"]')
+            sb.click('//*[@id="dataTableServices"]/tbody/tr[1]/td[4]/a')
+            message = sb.wait_for_element('/html/body/div[2]/div[2]/div/div/div/div/div/div')
+            if 'All appointments for this service are currently booked' in message.text:
+                print("No appointments available")
+                
+            else:
+                print("Appointments available")
+
+            sb.refresh()
+            sb.click('//*[@id="advanced"]')
+            sb.click('//*[@id="dataTableServices"]/tbody/tr[2]/td[4]/a')
+            message = sb.wait_for_element('/html/body/div[2]/div[2]/div/div/div/div/div/div')
+            if 'All appointments for this service are currently booked' in message.text:
+                print("No appointments available")
+            else:
+                print("Appointments available")
+
+        except Exception as e:
+            print(e)
+
+        time.sleep(int(os.environ.get("REFRESH_RATE", 60)))
 
     breakpoint()
-
-
-    #sb.click('button[id="CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll"]')
-    
-    #sb.type('input[id="login_password"]', os.environ.get("MZPASS"))
-    #sb.click('a[id="login"]')
-    #sb.open("https://www.managerzone.com/?p=national_teams&type=senior")
