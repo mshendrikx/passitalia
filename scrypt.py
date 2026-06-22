@@ -2,9 +2,9 @@ import os
 import time
 
 from seleniumbase import SB
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 
-load_dotenv()
+#load_dotenv()
 
 
 with SB(
