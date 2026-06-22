@@ -35,6 +35,7 @@ with SB(
             message = sb.wait_for_element('/html/body/div[2]/div[2]/div/div/div/div/div/div')
             if 'All appointments for this service are currently booked' in message.text:
                 print("No appointments available")
+                sb.click('/html/body/div[2]/div[2]/div/div/div/div/div/div/div/div[4]/button')
                 
             else:
                 print("Appointments available")
@@ -43,6 +44,7 @@ with SB(
             message = sb.wait_for_element('/html/body/div[2]/div[2]/div/div/div/div/div/div')
             if 'All appointments for this service are currently booked' in message.text:
                 print("No appointments available")
+                sb.click('/html/body/div[2]/div[2]/div/div/div/div/div/div/div/div[4]/button')
             else:
                 print("Appointments available")
 
