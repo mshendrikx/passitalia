@@ -37,12 +37,12 @@ with SB(
         sb.type('input[id="floatingLabelInput33"]', os.environ.get("EMAIL"))
         sb.type('input[id="floatingLabelInput38"]', os.environ.get("PASSWORD"))
         sb.click('//*[@id="wrapper"]/div[3]/button')
-        sb.click('/html/body/header/nav[1]/div/div/a[3]')
     except Exception as e:
         print('Error during login:', e)
 
     while 1 == 1:
 
+        sb.click('/html/body/header/nav[1]/div/div/a[3]')
         sb.click('//*[@id="advanced"]')
 
         try:
