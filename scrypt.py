@@ -28,9 +28,9 @@ with SB(
 
     while 1 == 1:
 
+        sb.click('//*[@id="advanced"]')
+
         try:
-            sb.refresh()
-            sb.click('//*[@id="advanced"]')
             sb.click('//*[@id="dataTableServices"]/tbody/tr[1]/td[4]/a')
             message = sb.wait_for_element('/html/body/div[2]/div[2]/div/div/div/div/div/div')
             if 'All appointments for this service are currently booked' in message.text:
@@ -39,8 +39,6 @@ with SB(
             else:
                 print("Appointments available")
 
-            sb.refresh()
-            sb.click('//*[@id="advanced"]')
             sb.click('//*[@id="dataTableServices"]/tbody/tr[2]/td[4]/a')
             message = sb.wait_for_element('/html/body/div[2]/div[2]/div/div/div/div/div/div')
             if 'All appointments for this service are currently booked' in message.text:
