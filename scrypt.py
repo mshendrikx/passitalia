@@ -1,5 +1,6 @@
 import os
 import time
+import random
 
 from seleniumbase import SB
 from whatsapp_api import whatsapp_send_message, whatsapp_get_numberid
@@ -8,6 +9,8 @@ WHATSAPP_BASE_URL = os.environ.get("WHATSAPP_BASE_URL")
 WHATSAPP_API_KEY = os.environ.get("WHATSAPP_API_KEY")
 WHATSAPP_SESSION = os.environ.get("WHATSAPP_SESSION")
 WHATSAPP_NUMBER = os.environ.get("WHATSAPP_NUMBER")
+REFRESH_RATE_MIN = int(os.environ.get("REFRESH_RATE_MIN", 60))
+REFRESH_RATE_MAX = int(os.environ.get("REFRESH_RATE_MAX", 120))
 
 whatsapp_id = whatsapp_get_numberid(
     base_url=WHATSAPP_BASE_URL,
@@ -79,6 +82,5 @@ with SB(
         except Exception as e:
             print(e)
 
-        time.sleep(int(os.environ.get("REFRESH_RATE", 60)))
-
-    breakpoint()
+        interval = random.randint(REFRESH_RATE_MIN, REFRESH_RATE_MAX)
+        time.sleep(interval)
