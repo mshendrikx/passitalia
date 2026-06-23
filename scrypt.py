@@ -60,10 +60,15 @@ with SB(
         try:
 
             sb.open("https://prenotami.esteri.it/")
+            sb.wait_for_element("/html/body/header/nav[1]/div/div/a[5]")
             sb.click("/html/body/header/nav[1]/div/div/a[5]")
+            sb.wait_for_element('//*[@id="pingid-button"]')
             sb.click('//*[@id="pingid-button"]')
+            sb.wait_for_element('input[id="floatingLabelInput33"]')
             sb.type('input[id="floatingLabelInput33"]', os.environ.get("EMAIL"))
+            sb.wait_for_element('input[id="floatingLabelInput38"]')
             sb.type('input[id="floatingLabelInput38"]', os.environ.get("PASSWORD"))
+            sb.wait_for_element('//*[@id="wrapper"]/div[3]/button')
             sb.click('//*[@id="wrapper"]/div[3]/button')
             logger.info("Successfully logged in")
             print("Successfully logged in")
