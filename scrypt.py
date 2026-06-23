@@ -76,7 +76,8 @@ with SB(
         except Exception as e:
             logger.error("Error during login: %s", e)
             print("Error during login: %s" % e)
-            time.sleep(15)
+            interval = random.randint(10, 20)
+            time.sleep(interval)            
 
     while 1 == 1:
 
@@ -87,13 +88,17 @@ with SB(
             sb.wait_for_element('//*[@id="advanced"]')
             sb.click('//*[@id="advanced"]')
             sb.wait_for_element('//*[@id="dataTableServices"]/tbody/tr[1]/td[4]/a')
-            sb.click('//*[@id="dataTableServices"]/tbody/tr[1]/td[4]/a')
+            interval = random.randint(3, 8)
+            time.sleep(interval)                
+            sb.click('//*[@id="dataTableServices"]/tbody/tr[1]/td[4]/a')            
             message = sb.wait_for_element(
                 "/html/body/div[2]/div[2]/div/div/div/div/div/div"
             )
             if "All appointments for this service are currently booked" in message.text:
                 logger.info("No appointments available")
                 print("No appointments available")
+                interval = random.randint(3, 8)
+                time.sleep(interval)
                 sb.click(
                     "/html/body/div[2]/div[2]/div/div/div/div/div/div/div/div[4]/button"
                 )
@@ -111,6 +116,8 @@ with SB(
                 )
 
             sb.wait_for_element('//*[@id="dataTableServices"]/tbody/tr[2]/td[4]/a')
+            interval = random.randint(3, 8)
+            time.sleep(interval)
             sb.click('//*[@id="dataTableServices"]/tbody/tr[2]/td[4]/a')
             message = sb.wait_for_element(
                 "/html/body/div[2]/div[2]/div/div/div/div/div/div"
@@ -118,6 +125,8 @@ with SB(
             if "All appointments for this service are currently booked" in message.text:
                 logger.info("No appointments available")
                 print("No appointments available")
+                interval = random.randint(3, 8)
+                time.sleep(interval)
                 sb.click(
                     "/html/body/div[2]/div[2]/div/div/div/div/div/div/div/div[4]/button"
                 )
