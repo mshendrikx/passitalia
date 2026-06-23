@@ -76,6 +76,7 @@ with SB(
         except Exception as e:
             logger.error("Error during login: %s", e)
             print("Error during login: %s" % e)
+            time.sleep(15)
 
     while 1 == 1:
 
