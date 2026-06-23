@@ -60,8 +60,8 @@ with SB(
         try:
 
             sb.open("https://prenotami.esteri.it/")
-            sb.wait_for_element("/html/body/header/nav[1]/div/div/a[5]")
-            sb.click("/html/body/header/nav[1]/div/div/a[5]")
+#            sb.wait_for_element("/html/body/header/nav[1]/div/div/a[5]")
+#            sb.click("/html/body/header/nav[1]/div/div/a[5]")
             sb.wait_for_element('//*[@id="pingid-button"]')
             sb.click('//*[@id="pingid-button"]')
             sb.wait_for_element('input[id="floatingLabelInput33"]')
@@ -81,8 +81,8 @@ with SB(
 
         try:
             
-            sb.wait_for_element("/html/body/header/nav[1]/div/div/a[3]")
-            sb.click("/html/body/header/nav[1]/div/div/a[3]")
+            sb.wait_for_element("/html/body/header/nav[1]/div/div/a[2]")
+            sb.click("/html/body/header/nav[1]/div/div/a[2]")
             sb.wait_for_element('//*[@id="advanced"]')
             sb.click('//*[@id="advanced"]')
             sb.wait_for_element('//*[@id="dataTableServices"]/tbody/tr[1]/td[4]/a')
