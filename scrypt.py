@@ -84,3 +84,4 @@ with SB(
 
         interval = random.randint(REFRESH_RATE_MIN, REFRESH_RATE_MAX)
         time.sleep(interval)
+        sb.open("https://prenotami.esteri.it/")
