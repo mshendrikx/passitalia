@@ -29,23 +29,29 @@ with SB(
 #    servername=os.environ.get("SELENIUM_HUB_HOST", None),
 #    port=os.environ.get("SELENIUM_HUB_PORT", None),
 ) as sb:
+
+    login = False
+
+    while login == False:
     
-    try:
-        sb.open("https://prenotami.esteri.it/")
-        sb.click('/html/body/header/nav[1]/div/div/a[5]')
-        sb.click('//*[@id="pingid-button"]')
-        sb.type('input[id="floatingLabelInput33"]', os.environ.get("EMAIL"))
-        sb.type('input[id="floatingLabelInput38"]', os.environ.get("PASSWORD"))
-        sb.click('//*[@id="wrapper"]/div[3]/button')
-    except Exception as e:
-        print('Error during login:', e)
+        try:
+            sb.open("https://prenotami.esteri.it/")
+            sb.click('/html/body/header/nav[1]/div/div/a[5]')
+            sb.click('//*[@id="pingid-button"]')
+            sb.type('input[id="floatingLabelInput33"]', os.environ.get("EMAIL"))
+            sb.type('input[id="floatingLabelInput38"]', os.environ.get("PASSWORD"))
+            sb.click('//*[@id="wrapper"]/div[3]/button')
+            login = True
+        except Exception as e:
+            print('Error during login:', e)
 
     while 1 == 1:
 
-        sb.click('/html/body/header/nav[1]/div/div/a[3]')
-        sb.click('//*[@id="advanced"]')
-
         try:
+
+            sb.click('/html/body/header/nav[1]/div/div/a[3]')
+            sb.click('//*[@id="advanced"]')
+
             sb.click('//*[@id="dataTableServices"]/tbody/tr[1]/td[4]/a')
             message = sb.wait_for_element('/html/body/div[2]/div[2]/div/div/div/div/div/div')
             if 'All appointments for this service are currently booked' in message.text:
