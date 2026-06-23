@@ -12,8 +12,9 @@ WHATSAPP_SESSION = os.environ.get("WHATSAPP_SESSION")
 WHATSAPP_NUMBER = os.environ.get("WHATSAPP_NUMBER")
 REFRESH_RATE_MIN = int(os.environ.get("REFRESH_RATE_MIN", 60))
 REFRESH_RATE_MAX = int(os.environ.get("REFRESH_RATE_MAX", 120))
+LOG_FILE_PATH = os.environ.get("LOG_FILE_PATH", "/app/logs/passitalia.log")
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s", filename="/app/log/passitalia.log", filemode="a")
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s", filename=LOG_FILE_PATH, filemode="a")
 logger = logging.getLogger(__name__)
 
 print("Starting SeleniumBase script")
