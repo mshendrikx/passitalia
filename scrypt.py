@@ -14,7 +14,7 @@ REFRESH_RATE_MIN = int(os.environ.get("REFRESH_RATE_MIN", 60))
 REFRESH_RATE_MAX = int(os.environ.get("REFRESH_RATE_MAX", 120))
 SELENIUM_HUB_HOST = os.environ.get("SELENIUM_HUB_HOST", None)
 SELENIUM_HUB_PORT = os.environ.get("SELENIUM_HUB_PORT", None)
-LOG_FILE_PATH = os.environ.get("LOG_FILE_PATH", "/app/logs/passitalia.log")
+LOG_FILE_PATH = "./logs/passitalia.log"
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s", filename=LOG_FILE_PATH, filemode="a")
 logger = logging.getLogger(__name__)
