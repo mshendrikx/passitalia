@@ -75,10 +75,12 @@ with SB(
     while 1 == 1:
 
         try:
-
+            
+            sb.wait_for_element("/html/body/header/nav[1]/div/div/a[3]")
             sb.click("/html/body/header/nav[1]/div/div/a[3]")
+            sb.wait_for_element('//*[@id="advanced"]')
             sb.click('//*[@id="advanced"]')
-
+            sb.wait_for_element('//*[@id="dataTableServices"]/tbody/tr[1]/td[4]/a')
             sb.click('//*[@id="dataTableServices"]/tbody/tr[1]/td[4]/a')
             message = sb.wait_for_element(
                 "/html/body/div[2]/div[2]/div/div/div/div/div/div"
@@ -102,6 +104,7 @@ with SB(
                     content_type="string",
                 )
 
+            sb.wait_for_element('//*[@id="dataTableServices"]/tbody/tr[2]/td[4]/a')
             sb.click('//*[@id="dataTableServices"]/tbody/tr[2]/td[4]/a')
             message = sb.wait_for_element(
                 "/html/body/div[2]/div[2]/div/div/div/div/div/div"
