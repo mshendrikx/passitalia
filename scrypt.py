@@ -12,6 +12,8 @@ WHATSAPP_SESSION = os.environ.get("WHATSAPP_SESSION")
 WHATSAPP_NUMBER = os.environ.get("WHATSAPP_NUMBER")
 REFRESH_RATE_MIN = int(os.environ.get("REFRESH_RATE_MIN", 60))
 REFRESH_RATE_MAX = int(os.environ.get("REFRESH_RATE_MAX", 120))
+SELENIUM_HUB_HOST = os.environ.get("SELENIUM_HUB_HOST", None)
+SELENIUM_HUB_PORT = os.environ.get("SELENIUM_HUB_PORT", None)
 LOG_FILE_PATH = os.environ.get("LOG_FILE_PATH", "/app/logs/passitalia.log")
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s", filename=LOG_FILE_PATH, filemode="a")
@@ -24,35 +26,38 @@ with SB(
     # browser="chrome",
     headless=True,
     uc=True,
-    servername=os.environ.get("SELENIUM_HUB_HOST", None),
-    port=os.environ.get("SELENIUM_HUB_PORT", None),
+    servername=SELENIUM_HUB_HOST,
+    port=SELENIUM_HUB_PORT,
 ) as sb:
     
     print("SeleniumBase initialized successfully")
     logger.info("SeleniumBase initialized successfully")
 
-    login = False
-
-    while login == False:
-
+    whatsapp_id = None
+    while whatsapp_id is None:
         try:
-
             whatsapp_id = whatsapp_get_numberid(
                 base_url=WHATSAPP_BASE_URL,
                 api_key=WHATSAPP_API_KEY,
                 session=WHATSAPP_SESSION,
                 contact=WHATSAPP_NUMBER,
             )
-            
             if whatsapp_id is None:
                 logger.error("Error retrieving whatsapp number id")
                 time.sleep(60)
-                continue
+        except Exception as e:
+            logger.error("Error retrieving whatsapp number id: %s", e)
+            time.sleep(60)
 
-            contacts = [whatsapp_id]
-            content = "Agendamento disponível! Acesse https://prenotami.esteri.it/ para marcar seu horário."
-            logger.info("Successfully retrieved whatsapp number id")
-            print("Successfully retrieved whatsapp number id")
+    contacts = [whatsapp_id]
+    content = "Agendamento disponível! Acesse https://prenotami.esteri.it/ para marcar seu horário."
+    logger.info("Successfully retrieved whatsapp number id")
+    print("Successfully retrieved whatsapp number id")
+
+    login = False
+    while login == False:
+
+        try:
 
             sb.open("https://prenotami.esteri.it/")
             sb.click("/html/body/header/nav[1]/div/div/a[5]")
