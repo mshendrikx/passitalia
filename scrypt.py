@@ -120,12 +120,12 @@ while 1 == 1:
                     message = sb.wait_for_element(
                         "/html/body/div[2]/div[2]/div/div/div/div/div/div"
                     )
-                    if "All appointments for this service are currently booked" in message.text:
-                        logger.info("No appointments available")
-                        print("No appointments available")
+                    if "All appointments for this service are currently booked." in message.text:
+                        logger.info("No appointments 1 available")
+                        print("No appointments 1 available")
     
                     else:
-                        logger.info("Appointments available")
+                        logger.info("Appointments 1 available")
                         print("Appointments available")
                         whatsapp_send_message(
                             base_url=WHATSAPP_BASE_URL,
@@ -142,11 +142,11 @@ while 1 == 1:
                     message = sb.wait_for_element(
                         "/html/body/div[2]/div[2]/div/div/div/div/div/div"
                     )
-                    if "All appointments for this service are currently booked" in message.text:
-                        logger.info("No appointments available")
-                        print("No appointments available")
+                    if "All appointments for this service are currently booked." in message.text:
+                        logger.info("No appointments 2 available")
+                        print("No appointments 2 available")
                     else:
-                        logger.info("Appointments available")
+                        logger.info("Appointments 2 available")
                         print("Appointments available")
                         whatsapp_send_message(
                             base_url=WHATSAPP_BASE_URL,
