@@ -120,7 +120,7 @@ while 1 == 1:
                     message = sb.wait_for_element(
                         "/html/body/div[2]/div[2]/div/div/div/div/div/div"
                     )
-                    if "All appointments for this service are currently booked" in message.text:
+                    if "All appointments for this service are currently booked" not in message.text:
                         logger.info("No appointments available")
                         print("No appointments available")
     
@@ -137,7 +137,7 @@ while 1 == 1:
                         )
                         found_appointments = True
                         
-                    time.sleep(random.randint(1, 2))
+                    time.sleep(2)
                     sb.open("https://prenotami.esteri.it/Services/Booking/4784")
                     message = sb.wait_for_element(
                         "/html/body/div[2]/div[2]/div/div/div/div/div/div"
@@ -165,7 +165,7 @@ while 1 == 1:
                 if found_appointments:
                     break
                     
-                time.sleep(random.randint(1, 2))
+                time.sleep(2)
 
         logger.info("Waiting next window")
         print("Waiting next window")
