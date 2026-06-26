@@ -22,16 +22,29 @@ logger = logging.getLogger(__name__)
 
 def active_login():
     
+    if START_MINUTE == 0:
+        start_login = 58
+    elif START_MINUTE == 1:
+        start_login = 59
+    else:
+        start_login = START_MINUTE - 2
+
     now = datetime.now()
-    if now.minute == (START_MINUTE - 2):
+
+    if now.minute == start_login:
         return True
     else:   
         return False
     
 def active_attempts():
-    
+
+    if START_MINUTE == 0:
+        start_login = 59
+    else:
+        start_login = START_MINUTE - 1
+
     now = datetime.now()
-    if now.minute == (START_MINUTE - 1) and now.second > 57:
+    if now.minute == start_login and now.second > 57:
         return True
     else:   
         return False
@@ -98,6 +111,7 @@ while 1 == 1:
             while not active_attempts():
                 time.sleep(1)
 
+            found_appointments = False
             attempts = 0            
             while attempts < ATTEMPTS:
                 attempts += 1
@@ -121,6 +135,7 @@ while 1 == 1:
                             content=content,
                             content_type="string",
                         )
+                        found_appointments = True
                         
                     time.sleep(random.randint(1, 2))
                     sb.open("https://prenotami.esteri.it/Services/Booking/4784")
@@ -141,13 +156,19 @@ while 1 == 1:
                             content=content,
                             content_type="string",
                         )
+                        found_appointments = True
     
                 except Exception as e:
                     logger.error("Error occurred: %s", e)
                     print("Error occurred: %s" % e)
                     
+                if found_appointments:
+                    break
+                    
                 time.sleep(random.randint(1, 2))
 
+        logger.info("Waiting next window")
+        print("Waiting next window")
         time.sleep(60)
         
     
