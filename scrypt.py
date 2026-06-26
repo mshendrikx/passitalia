@@ -120,7 +120,7 @@ while 1 == 1:
                     message = sb.wait_for_element(
                         "/html/body/div[2]/div[2]/div/div/div/div/div/div"
                     )
-                    if "All appointments for this service are currently booked" not in message.text:
+                    if "All appointments for this service are currently booked" in message.text:
                         logger.info("No appointments available")
                         print("No appointments available")
     
