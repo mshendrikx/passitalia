@@ -119,7 +119,7 @@ while 1 == 1:
                 try:
                     sb.open("https://prenotami.esteri.it/Services/Booking/2391")
                     message = sb.wait_for_element(
-                        "/html/body/div[2]/div[2]/div/div/div/div/div/div"
+                        "/html/body/div[2]/div[2]/div/div/div/div/div/div", timeout=2
                     )
                     if NO_APPOINTMENTS_MESSAGE in message.text:
                         logger.info("No appointments 1 available")
@@ -136,12 +136,28 @@ while 1 == 1:
                             content=content,
                             content_type="string",
                         )
+
                         found_appointments = True
                         
-                    time.sleep(2)
+                except Exception as e:
+                    logger.error("Error occurred: %s", e)
+                    print("Error occurred: %s" % e)
+                    logger.info("Appointments 1 available")
+                    print("Appointments 1 available")
+                    whatsapp_send_message(
+                        base_url=WHATSAPP_BASE_URL,
+                        api_key=WHATSAPP_API_KEY,
+                        session=WHATSAPP_SESSION,
+                        contacts=contacts,
+                        content=content,
+                        content_type="string",
+                    )
+                    found_appointments = True
+                    
+                try:                        
                     sb.open("https://prenotami.esteri.it/Services/Booking/4784")
                     message = sb.wait_for_element(
-                        "/html/body/div[2]/div[2]/div/div/div/div/div/div"
+                        "/html/body/div[2]/div[2]/div/div/div/div/div/div", timeout=2
                     )
                     if NO_APPOINTMENTS_MESSAGE in message.text:
                         logger.info("No appointments 2 available")
@@ -158,16 +174,24 @@ while 1 == 1:
                             content_type="string",
                         )
                         found_appointments = True
-    
                 except Exception as e:
                     logger.error("Error occurred: %s", e)
                     print("Error occurred: %s" % e)
-                    
+                    logger.info("Appointments 1 available")
+                    print("Appointments 1 available")
+                    whatsapp_send_message(
+                        base_url=WHATSAPP_BASE_URL,
+                        api_key=WHATSAPP_API_KEY,
+                        session=WHATSAPP_SESSION,
+                        contacts=contacts,
+                        content=content,
+                        content_type="string",
+                    )
+                    found_appointments = True
+                                        
                 if found_appointments:
                     break
                     
-                time.sleep(2)
-
         logger.info("Waiting next window")
         print("Waiting next window")
         time.sleep(60)
