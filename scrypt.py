@@ -16,7 +16,7 @@ SELENIUM_HUB_PORT = os.environ.get("SELENIUM_HUB_PORT", None)
 ATTEMPTS = int(os.environ.get("ATTEMPTS", 5))
 START_MINUTE = int(os.environ.get("START_MINUTE", 59))
 LOG_FILE_PATH = "./logs/passitalia.log" 
-NO_APPOINTMENTS_MESSAGE = "currently booked."
+NO_APPOINTMENTS_MESSAGE = "currently booked"
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s", filename=LOG_FILE_PATH, filemode="a")
 logger = logging.getLogger(__name__)
