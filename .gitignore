@@ -220,3 +220,4 @@ __marimo__/
 # Project-specific .gitignore rules:
 downloaded_files
 logs/
+build.sh
