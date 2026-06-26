@@ -16,6 +16,7 @@ SELENIUM_HUB_PORT = os.environ.get("SELENIUM_HUB_PORT", None)
 ATTEMPTS = int(os.environ.get("ATTEMPTS", 5))
 START_MINUTE = int(os.environ.get("START_MINUTE", 59))
 LOG_FILE_PATH = "./logs/passitalia.log" 
+NO_APPOINTMENTS_MESSAGE = "All appointments for this service are currently booked."
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s", filename=LOG_FILE_PATH, filemode="a")
 logger = logging.getLogger(__name__)
@@ -120,13 +121,13 @@ while 1 == 1:
                     message = sb.wait_for_element(
                         "/html/body/div[2]/div[2]/div/div/div/div/div/div"
                     )
-                    if "All appointments for this service are currently booked." in message.text:
+                    if NO_APPOINTMENTS_MESSAGE in message.text:
                         logger.info("No appointments 1 available")
                         print("No appointments 1 available")
     
                     else:
                         logger.info("Appointments 1 available")
-                        print("Appointments available")
+                        print("Appointments 1 available")
                         whatsapp_send_message(
                             base_url=WHATSAPP_BASE_URL,
                             api_key=WHATSAPP_API_KEY,
@@ -142,7 +143,7 @@ while 1 == 1:
                     message = sb.wait_for_element(
                         "/html/body/div[2]/div[2]/div/div/div/div/div/div"
                     )
-                    if "All appointments for this service are currently booked." in message.text:
+                    if NO_APPOINTMENTS_MESSAGE in message.text:
                         logger.info("No appointments 2 available")
                         print("No appointments 2 available")
                     else:
