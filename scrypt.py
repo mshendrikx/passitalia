@@ -119,7 +119,7 @@ while 1 == 1:
                 try:
                     sb.open("https://prenotami.esteri.it/Services/Booking/2391")
                     message = sb.wait_for_element(
-                        "/html/body/div[2]/div[2]/div/div/div/div/div/div", timeout=2
+                        "/html/body/div[2]/div[2]/div/div/div/div/div/div", timeout=5
                     )
                     if NO_APPOINTMENTS_MESSAGE in message.text:
                         logger.info("No appointments 1 available")
@@ -157,7 +157,7 @@ while 1 == 1:
                 try:                        
                     sb.open("https://prenotami.esteri.it/Services/Booking/4784")
                     message = sb.wait_for_element(
-                        "/html/body/div[2]/div[2]/div/div/div/div/div/div", timeout=2
+                        "/html/body/div[2]/div[2]/div/div/div/div/div/div", timeout=5
                     )
                     if NO_APPOINTMENTS_MESSAGE in message.text:
                         logger.info("No appointments 2 available")
