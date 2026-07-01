@@ -13,7 +13,6 @@ WHATSAPP_SESSION = os.environ.get("WHATSAPP_SESSION")
 WHATSAPP_NUMBER = os.environ.get("WHATSAPP_NUMBER")
 ATTEMPTS = int(os.environ.get("ATTEMPTS", 5))
 START_MINUTE = int(os.environ.get("START_MINUTE", 59))
-BROWSER_HEADLESS = os.environ.get("BROWSER_HEADLESS", "true").lower() in ("1", "true", "yes")
 BROWSER_EXECUTABLE_PATH = os.environ.get("BROWSER_EXECUTABLE_PATH") or os.environ.get("CHROME_BIN")
 TEST_EXEC = os.environ.get("TEST", "false").lower() in ("1", "true", "yes")
 LOG_FILE_PATH = "./logs/passitalia.log"
@@ -86,7 +85,7 @@ async def login_prenotami(tab):
         try:
             await tab.get("https://prenotami.esteri.it/")
             await tab.sleep(3)
-            await raise_if_bot_challenge(tab)
+            #await raise_if_bot_challenge(tab)
             await click_selector(tab, "#pingid-button")
             await type_selector(tab, 'input[id="floatingLabelInput33"]', os.environ.get("EMAIL"))
             await type_selector(tab, 'input[id="floatingLabelInput38"]', os.environ.get("PASSWORD"))
@@ -105,7 +104,9 @@ async def login_prenotami(tab):
 async def check_booking(tab, service_id, contacts, content):
     try:
         await tab.get(f"https://prenotami.esteri.it/Services/Booking/{service_id}")
-        await tab.select("#typeofbookingddl", timeout=10)
+        element = await tab.select("#typeofbookingddl", timeout=10)
+        if element is None:
+            raise TimeoutError("typeofbookingddl not found")
 
         whatsapp_send_message(
             base_url=WHATSAPP_BASE_URL,
@@ -128,7 +129,8 @@ async def check_booking(tab, service_id, contacts, content):
 
 
 async def run_browser_window(contacts, content):
-    browser_options = {"headless": BROWSER_HEADLESS}
+    
+    browser_options = {"headless": False}
     if BROWSER_EXECUTABLE_PATH:
         browser_options["browser_executable_path"] = BROWSER_EXECUTABLE_PATH
 
@@ -144,17 +146,21 @@ async def run_browser_window(contacts, content):
         while not active_attempts():
             await tab.sleep(1)
 
-        found_appointments = False
+        found_2391 = False
+        found_4784 = False
         attempts = 0
 
         while attempts < ATTEMPTS:
             attempts += 1
 
-            found_appointments = await check_booking(tab, "2391", contacts, content) or found_appointments
-            found_appointments = await check_booking(tab, "4784", contacts, content) or found_appointments
+            found_2391 = await check_booking(tab, "2391", contacts, content)
+            found_4784 = await check_booking(tab, "4784", contacts, content)
 
-            if found_appointments:
+            if found_2391 or found_4784:
                 break
+            
+            time.sleep(5)  # Wait a bit before the next attempt
+            
     finally:
         browser.stop()
 

@@ -38,15 +38,17 @@ RUN apt-get update && apt-get install -y  \
     libxrender1 \
     lsb-release \
     xdg-utils \
+    xvfb \
     chromium \
     --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
 
-# Set environment variables for headless Chromium
+# Set environment variables for Chromium inside the virtual display
 # DISPLAY=:99 is for the virtual display server.
 # CHROME_BIN points to the Chromium executable.
 ENV DISPLAY=:99
 ENV CHROME_BIN=/usr/bin/chromium
+ENV BROWSER_HEADLESS=false
 ENV TZ=America/Sao_Paulo
 
 WORKDIR /app
@@ -64,5 +66,5 @@ COPY . .
 # Expose port 5000 for web traffic
 EXPOSE 5000
 
-# Start pyhton app in the foreground
-CMD ["python3", "/app/scrypt.py"]
+# Start the virtual display and Python app in the foreground
+CMD ["sh", "-c", "Xvfb :99 -screen 0 1920x1080x24 -nolisten tcp & exec python3 /app/scrypt_nodrive.py"]
