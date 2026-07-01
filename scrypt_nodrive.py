@@ -135,6 +135,7 @@ async def run_browser_window(contacts, content):
         browser_options["browser_executable_path"] = BROWSER_EXECUTABLE_PATH
 
     browser = await uc.start(**browser_options)
+    
     try:
         tab = await browser.get("about:blank")
 
@@ -159,7 +160,7 @@ async def run_browser_window(contacts, content):
             if found_2391 or found_4784:
                 break
             
-            time.sleep(5)  # Wait a bit before the next attempt
+            time.sleep(3)  # Wait a bit before the next attempt
             
     finally:
         browser.stop()
