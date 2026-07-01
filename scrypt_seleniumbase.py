@@ -16,6 +16,7 @@ SELENIUM_HUB_PORT = os.environ.get("SELENIUM_HUB_PORT", None)
 ATTEMPTS = int(os.environ.get("ATTEMPTS", 5))
 START_MINUTE = int(os.environ.get("START_MINUTE", 59))
 TEST_EXEC = os.environ.get("TEST", "false").lower() in ("1", "true", "yes")
+BROWSER_HEADLESS = os.environ.get("BROWSER_HEADLESS", "true").lower() in ("1", "true", "yes")
 LOG_FILE_PATH = "./logs/passitalia.log"
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s", filename=LOG_FILE_PATH, filemode="a")
@@ -85,7 +86,7 @@ while 1 == 1:
 
         with SB(
             # browser="chrome",
-            headless=True,
+            headless=BROWSER_HEADLESS,
             uc=True,
             servername=SELENIUM_HUB_HOST,
             port=SELENIUM_HUB_PORT,
