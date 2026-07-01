@@ -39,17 +39,14 @@ RUN apt-get update && apt-get install -y  \
     lsb-release \
     xdg-utils \
     chromium \
-    chromium-driver \
     --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
 
 # Set environment variables for headless Chromium
 # DISPLAY=:99 is for the virtual display server.
 # CHROME_BIN points to the Chromium executable.
-# CHROMEDRIVER_PATH points to the Chromedriver executable.
 ENV DISPLAY=:99
 ENV CHROME_BIN=/usr/bin/chromium
-ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
 ENV TZ=America/Sao_Paulo
 
 WORKDIR /app

@@ -1,3 +1,2 @@
-seleniumbase
+nodriver
 requests
-logging

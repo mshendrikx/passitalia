@@ -15,14 +15,17 @@ SELENIUM_HUB_HOST = os.environ.get("SELENIUM_HUB_HOST", None)
 SELENIUM_HUB_PORT = os.environ.get("SELENIUM_HUB_PORT", None)
 ATTEMPTS = int(os.environ.get("ATTEMPTS", 5))
 START_MINUTE = int(os.environ.get("START_MINUTE", 59))
-LOG_FILE_PATH = "./logs/passitalia.log" 
-NO_APPOINTMENTS_MESSAGE = "currently booked"
+TEST_EXEC = os.environ.get("TEST", "false").lower() in ("1", "true", "yes")
+LOG_FILE_PATH = "./logs/passitalia.log"
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s", filename=LOG_FILE_PATH, filemode="a")
 logger = logging.getLogger(__name__)
 
 def active_login():
     
+    if TEST_EXEC:
+        return True
+
     if START_MINUTE == 0:
         start_login = 58
     elif START_MINUTE == 1:
@@ -38,6 +41,9 @@ def active_login():
         return False
     
 def active_attempts():
+
+    if TEST_EXEC:
+        return True
 
     if START_MINUTE == 0:
         start_login = 59
@@ -108,77 +114,48 @@ while 1 == 1:
                 except Exception as e:
                     logger.error("Error during login: %s", e)
                     print("Error during login: %s" % e)
+                    time.sleep(10)
 
             while not active_attempts():
                 time.sleep(1)
 
             found_appointments = False
-            attempts = 0            
+            attempts = 0         
+               
             while attempts < ATTEMPTS:
                 attempts += 1
                 try:
                     sb.open("https://prenotami.esteri.it/Services/Booking/2391")
                     message = sb.wait_for_element(
-                        "/html/body/div[2]/div[2]/div/div/div/div/div/div", timeout=5
+                        '//*[@id="typeofbookingddl"]', timeout=10
                     )
-                    if NO_APPOINTMENTS_MESSAGE in message.text:
-                        logger.info("No appointments 1 available")
-                        print("No appointments 1 available")
-    
-                    else:
-                        logger.info("Appointments 1 available")
-                        print("Appointments 1 available")
-                        whatsapp_send_message(
-                            base_url=WHATSAPP_BASE_URL,
-                            api_key=WHATSAPP_API_KEY,
-                            session=WHATSAPP_SESSION,
-                            contacts=contacts,
-                            content=content,
-                            content_type="string",
-                        )
 
-                        found_appointments = True
+                    whatsapp_send_message(
+                        base_url=WHATSAPP_BASE_URL,
+                        api_key=WHATSAPP_API_KEY,
+                        session=WHATSAPP_SESSION,
+                        contacts=contacts,
+                        content=content,
+                        content_type="string",
+                    )
+
+                    logger.info("Appointments 2391 available")
+                    print("Appointments 2391 available")
+                    
+                    found_appointments = True
                         
                 except Exception as e:
                     logger.error("Error occurred: %s", e)
                     print("Error occurred: %s" % e)
-                    logger.info("Appointments 1 available")
-                    print("Appointments 1 available")
-                    whatsapp_send_message(
-                        base_url=WHATSAPP_BASE_URL,
-                        api_key=WHATSAPP_API_KEY,
-                        session=WHATSAPP_SESSION,
-                        contacts=contacts,
-                        content=content,
-                        content_type="string",
-                    )
-                    found_appointments = True
+                    logger.info("No Appointments 2391 available")
+                    print("No Appointments 2391 available")
                     
                 try:                        
                     sb.open("https://prenotami.esteri.it/Services/Booking/4784")
                     message = sb.wait_for_element(
-                        "/html/body/div[2]/div[2]/div/div/div/div/div/div", timeout=5
+                        '//*[@id="typeofbookingddl"]', timeout=10
                     )
-                    if NO_APPOINTMENTS_MESSAGE in message.text:
-                        logger.info("No appointments 2 available")
-                        print("No appointments 2 available")
-                    else:
-                        logger.info("Appointments 2 available")
-                        print("Appointments available")
-                        whatsapp_send_message(
-                            base_url=WHATSAPP_BASE_URL,
-                            api_key=WHATSAPP_API_KEY,
-                            session=WHATSAPP_SESSION,
-                            contacts=contacts,
-                            content=content,
-                            content_type="string",
-                        )
-                        found_appointments = True
-                except Exception as e:
-                    logger.error("Error occurred: %s", e)
-                    print("Error occurred: %s" % e)
-                    logger.info("Appointments 1 available")
-                    print("Appointments 1 available")
+
                     whatsapp_send_message(
                         base_url=WHATSAPP_BASE_URL,
                         api_key=WHATSAPP_API_KEY,
@@ -187,8 +164,18 @@ while 1 == 1:
                         content=content,
                         content_type="string",
                     )
+
+                    logger.info("Appointments 4784 available")
+                    print("Appointments 4784 available")
+
                     found_appointments = True
-                                        
+
+                except Exception as e:
+                    logger.error("Error occurred: %s", e)
+                    print("Error occurred: %s" % e)
+                    logger.info("No Appointments 4784 available")
+                    print("No Appointments 4784 available")
+                                                            
                 if found_appointments:
                     break
                     
