@@ -139,7 +139,8 @@ async def check_booking(tab, service_id, contacts, content):
 
 async def run_browser_window(contacts, content):
     
-    browser_options = {"headless": False}
+    browser_options = {"headless": False, "no_sandbox": True}
+    
     if BROWSER_EXECUTABLE_PATH:
         browser_options["browser_executable_path"] = BROWSER_EXECUTABLE_PATH
 
