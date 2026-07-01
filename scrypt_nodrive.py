@@ -80,8 +80,11 @@ async def raise_if_bot_challenge(tab):
 
 
 async def login_prenotami(tab):
+    
     login = False
+    count = 0
     while login == False:
+        count =+ 1
         try:
             await tab.get("https://prenotami.esteri.it/")
             await tab.sleep(3)
@@ -99,6 +102,12 @@ async def login_prenotami(tab):
             print("Error during login: %s" % e)
             if "Bot challenge detected" in str(e):
                 await asyncio.sleep(30)
+                
+        if count == ATTEMPTS:
+            break
+                
+    return login
+        
 
 
 async def check_booking(tab, service_id, contacts, content):
@@ -142,26 +151,29 @@ async def run_browser_window(contacts, content):
         print("Nodriver initialized successfully")
         logger.info("Nodriver initialized successfully")
 
-        await login_prenotami(tab)
+        if await login_prenotami(tab):
 
-        while not active_attempts():
-            await tab.sleep(1)
+            while not active_attempts():
+                await tab.sleep(1)
 
-        found_2391 = False
-        found_4784 = False
-        attempts = 0
+            found_2391 = False
+            found_4784 = False
+            attempts = 0
 
-        while attempts < ATTEMPTS:
-            attempts += 1
+            while attempts < ATTEMPTS:
+                attempts += 1
 
-            found_2391 = await check_booking(tab, "2391", contacts, content)
-            found_4784 = await check_booking(tab, "4784", contacts, content)
+                found_2391 = await check_booking(tab, "2391", contacts, content)
+                found_4784 = await check_booking(tab, "4784", contacts, content)
 
-            if found_2391 or found_4784:
-                break
-            
-            time.sleep(3)  # Wait a bit before the next attempt
-            
+                if found_2391 or found_4784:
+                    break
+                
+                time.sleep(3)  # Wait a bit before the next attempt
+        else:
+            print("Fail to login after %s attempts" % ATTEMPTS)
+            logger.info("Fail to login after %s attempts", ATTEMPTS)
+
     finally:
         browser.stop()
 
